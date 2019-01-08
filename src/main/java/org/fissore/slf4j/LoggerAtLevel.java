@@ -4,6 +4,7 @@ import org.slf4j.helpers.FormattingTuple;
 import org.slf4j.helpers.MessageFormatter;
 
 import java.util.function.BiConsumer;
+import java.util.function.Supplier;
 
 public class LoggerAtLevel {
 
@@ -25,17 +26,36 @@ public class LoggerAtLevel {
     }
 
     public void log(String format, Object arg) {
-        FormattingTuple ft = MessageFormatter.format(format, arg);
+        FormattingTuple ft = MessageFormatter.format(format, toString(arg));
         messageThrowableConsumer.accept(ft.getMessage(), cause);
     }
 
     public void log(String format, Object arg1, Object arg2) {
-        FormattingTuple ft = MessageFormatter.format(format, arg1, arg2);
+        FormattingTuple ft = MessageFormatter.format(format, toString(arg1), toString(arg2));
         messageThrowableConsumer.accept(ft.getMessage(), cause);
     }
 
     public void log(String format, Object... args) {
-        FormattingTuple ft = MessageFormatter.arrayFormat(format, args);
+        FormattingTuple ft = MessageFormatter.arrayFormat(format, toStrings(args));
         messageThrowableConsumer.accept(ft.getMessage(), cause);
+    }
+
+    private Object toString(Object arg) {
+        if (arg instanceof Supplier) {
+            arg = toString(((Supplier) arg).get());
+        }
+
+        return arg;
+    }
+
+    private Object[] toStrings(Object[] args) {
+        if (args == null) {
+            return null;
+        }
+
+        for (int i = 0; i < args.length; i++) {
+            args[i] = toString(args[i]);
+        }
+        return args;
     }
 }

@@ -6,6 +6,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.util.List;
+import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
 import static org.fissore.slf4j.Util.lazy;
@@ -16,6 +17,37 @@ public class FluentLoggerTest {
     @Before
     public void setUp() {
         TestLogbackAppender.EVENTS.clear();
+    }
+
+    @Test
+    public void errorLoggerContents() {
+        FluentLogger logger = FluentLoggerFactory.getLogger("org.fissore.slf4j.error.Test");
+
+        logger.atError().log("error no args");
+        logger.atError().log("error 1 arg {}", "one");
+        logger.atError().log("error 2 args {} {}", "one", (Supplier<?>) () -> "two");
+        logger.atError().log("error 2 args {} {}", "one", lazy(() -> "two"));
+        logger.atError().log("error 3 args {} {} {}", "one", (Supplier<?>) () -> null, lazy(null));
+        logger.atError().log("error null varargs", (Object[]) null);
+        logger.atError().withCause(new Exception()).log("error 2 args with exception {} {}", "one", (Supplier<?>) () -> "two");
+
+        assertEquals(7, TestLogbackAppender.EVENTS.size());
+        assertEquals("error no args", TestLogbackAppender.EVENTS.get(0).getFormattedMessage());
+        assertEquals("error 1 arg one", TestLogbackAppender.EVENTS.get(1).getFormattedMessage());
+        assertEquals("error 2 args one two", TestLogbackAppender.EVENTS.get(2).getFormattedMessage());
+        assertEquals("error 2 args one two", TestLogbackAppender.EVENTS.get(3).getFormattedMessage());
+        assertEquals("error 3 args one null null", TestLogbackAppender.EVENTS.get(4).getFormattedMessage());
+        assertEquals("error null varargs", TestLogbackAppender.EVENTS.get(5).getFormattedMessage());
+        assertEquals("error 2 args with exception one two", TestLogbackAppender.EVENTS.get(6).getFormattedMessage());
+    }
+
+    @Test
+    public void offLogger() {
+        FluentLogger logger = FluentLoggerFactory.getLogger("org.fissore.slf4j.off.Test");
+
+        tryLoggingAtAllLevels(logger);
+
+        assertEquals(0, TestLogbackAppender.EVENTS.size());
     }
 
     @Test

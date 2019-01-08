@@ -6,7 +6,7 @@
 
   <groupId>org.fissore</groupId>
   <artifactId>slf4j-fluent</artifactId>
-  <version>0.1.0</version>
+  <version>0.2.0-SNAPSHOT</version>
   <packaging>jar</packaging>
 
   <name>slf4j-fluent</name>
@@ -57,14 +57,14 @@
 
     <slf4j-api.version>1.7.5</slf4j-api.version>
     <junit.version>4.12</junit.version>
-    <logback-classic.version>1.0.13</logback-classic.version>
+    <logback-classic.version>1.2.3</logback-classic.version>
 
-    <maven-compiler-plugin.version>3.5.1</maven-compiler-plugin.version>
-    <pitest-maven.version>1.1.9</pitest-maven.version>
-    <jacoco-maven-plugin.version>0.7.6.201602180812</jacoco-maven-plugin.version>
-    <nexus-staging-maven-plugin.version>1.6.7</nexus-staging-maven-plugin.version>
+    <maven-compiler-plugin.version>3.8.0</maven-compiler-plugin.version>
+    <pitest-maven.version>1.4.3</pitest-maven.version>
+    <jacoco-maven-plugin.version>0.8.2</jacoco-maven-plugin.version>
+    <nexus-staging-maven-plugin.version>1.6.8</nexus-staging-maven-plugin.version>
     <maven-source-plugin.version>3.0.1</maven-source-plugin.version>
-    <maven-javadoc-plugin.version>2.10.3</maven-javadoc-plugin.version>
+    <maven-javadoc-plugin.version>3.0.1</maven-javadoc-plugin.version>
     <maven-gpg-plugin.version>1.6</maven-gpg-plugin.version>
   </properties>
 
@@ -107,10 +107,10 @@
         <version>${pitest-maven.version}</version>
         <configuration>
           <targetClasses>
-            <param>org.fissore.steroids.*</param>
+            <param>org.fissore.*</param>
           </targetClasses>
           <targetTests>
-            <param>org.fissore.steroids.*</param>
+            <param>org.fissore.*</param>
           </targetTests>
         </configuration>
       </plugin>

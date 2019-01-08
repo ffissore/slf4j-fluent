@@ -6,6 +6,7 @@
         </encoder>
     </appender>
 
+    <logger name="org.fissore.slf4j.off" level="off"/>
     <logger name="org.fissore.slf4j.error" level="error"/>
     <logger name="org.fissore.slf4j.warn" level="warn"/>
     <logger name="org.fissore.slf4j.info" level="info"/>

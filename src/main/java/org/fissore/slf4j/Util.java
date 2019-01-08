@@ -4,8 +4,8 @@ import java.util.function.Supplier;
 
 public class Util {
 
-    public static LazyArg lazy(Supplier<?> supplier) {
-        return new LazyArg(supplier);
+    public static Supplier<?> lazy(Supplier<?> supplier) {
+        return supplier;
     }
 
 }
