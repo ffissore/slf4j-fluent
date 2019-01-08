@@ -12,11 +12,11 @@ import java.util.List;
  */
 public class TestLogbackAppender extends ConsoleAppender<ILoggingEvent> {
 
-    public static final List<ILoggingEvent> EVENTS = new ArrayList<>();
+  public static final List<ILoggingEvent> EVENTS = new ArrayList<>();
 
-    @Override
-    protected void append(ILoggingEvent event) {
-        EVENTS.add(event);
-        super.append(event);
-    }
+  @Override
+  protected void append(ILoggingEvent event) {
+    EVENTS.add(event);
+    super.append(event);
+  }
 }
