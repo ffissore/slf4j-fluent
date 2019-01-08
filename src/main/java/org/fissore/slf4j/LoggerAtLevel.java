@@ -8,11 +8,13 @@ import java.util.function.Supplier;
 
 public class LoggerAtLevel {
 
+  private final Supplier<Boolean> levelEnabled;
   private final BiConsumer<String, Throwable> messageThrowableConsumer;
 
   private Throwable cause;
 
-  public LoggerAtLevel(BiConsumer<String, Throwable> messageThrowableConsumer) {
+  public LoggerAtLevel(Supplier<Boolean> levelEnabled, BiConsumer<String, Throwable> messageThrowableConsumer) {
+    this.levelEnabled = levelEnabled;
     this.messageThrowableConsumer = messageThrowableConsumer;
   }
 
@@ -26,16 +28,28 @@ public class LoggerAtLevel {
   }
 
   public void log(String format, Object arg) {
+    if (!levelEnabled.get()) {
+      return;
+    }
+
     FormattingTuple ft = MessageFormatter.format(format, toString(arg));
     messageThrowableConsumer.accept(ft.getMessage(), cause);
   }
 
   public void log(String format, Object arg1, Object arg2) {
+    if (!levelEnabled.get()) {
+      return;
+    }
+
     FormattingTuple ft = MessageFormatter.format(format, toString(arg1), toString(arg2));
     messageThrowableConsumer.accept(ft.getMessage(), cause);
   }
 
   public void log(String format, Object... args) {
+    if (!levelEnabled.get()) {
+      return;
+    }
+
     FormattingTuple ft = MessageFormatter.arrayFormat(format, toStrings(args));
     messageThrowableConsumer.accept(ft.getMessage(), cause);
   }

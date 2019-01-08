@@ -11,11 +11,11 @@ public class FluentLogger {
   private final LoggerAtLevel warnLogger;
 
   public FluentLogger(Logger logger) {
-    this.infoLogger = new LoggerAtLevel(logger::info);
-    this.debugLogger = new LoggerAtLevel(logger::debug);
-    this.errorLogger = new LoggerAtLevel(logger::error);
-    this.traceLogger = new LoggerAtLevel(logger::trace);
-    this.warnLogger = new LoggerAtLevel(logger::warn);
+    this.infoLogger = new LoggerAtLevel(logger::isInfoEnabled, logger::info);
+    this.debugLogger = new LoggerAtLevel(logger::isDebugEnabled, logger::debug);
+    this.errorLogger = new LoggerAtLevel(logger::isErrorEnabled, logger::error);
+    this.traceLogger = new LoggerAtLevel(logger::isTraceEnabled, logger::trace);
+    this.warnLogger = new LoggerAtLevel(logger::isWarnEnabled, logger::warn);
   }
 
   public LoggerAtLevel atInfo() {

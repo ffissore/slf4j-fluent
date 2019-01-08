@@ -41,6 +41,48 @@ public class FluentLoggerTest {
     assertEquals("error 2 args with exception one two", TestLogbackAppender.EVENTS.get(6).getFormattedMessage());
   }
 
+  private static class SupplierWithCallCheck implements Supplier<String> {
+
+    private final String value;
+    private int calls;
+
+    public SupplierWithCallCheck(String value) {
+      this.value = value;
+      this.calls = 0;
+    }
+
+    @Override
+    public String get() {
+      calls++;
+      return value;
+    }
+
+    public int getCalls() {
+      return calls;
+    }
+  }
+
+  @Test
+  public void lazyArgsNotCalledWhenLoggingIsDisabled() {
+    // when logging is enabled at error level, we evaluate the lazy args
+    FluentLogger logger = FluentLoggerFactory.getLogger("org.fissore.slf4j.error.Test");
+
+    SupplierWithCallCheck supplier = new SupplierWithCallCheck("one");
+    logger.atError().log("error 1 arg {}", supplier);
+    assertEquals("error 1 arg one", TestLogbackAppender.EVENTS.get(0).getFormattedMessage());
+    assertEquals(1, supplier.getCalls());
+
+    TestLogbackAppender.EVENTS.clear();
+
+    // when logging is DISABLED instead, we don't evaluate the lazy args
+    logger = FluentLoggerFactory.getLogger("org.fissore.slf4j.off.Test");
+
+    supplier = new SupplierWithCallCheck("one");
+    logger.atError().log("error 1 arg {}", supplier);
+    assertEquals(0, TestLogbackAppender.EVENTS.size());
+    assertEquals(0, supplier.getCalls());
+  }
+
   @Test
   public void offLogger() {
     FluentLogger logger = FluentLoggerFactory.getLogger("org.fissore.slf4j.off.Test");
