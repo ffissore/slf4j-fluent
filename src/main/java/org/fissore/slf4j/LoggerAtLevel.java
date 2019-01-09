@@ -26,16 +26,30 @@ public class LoggerAtLevel {
   }
 
   public void log(String format, Object arg) {
-    FormattingTuple ft = MessageFormatter.format(format, toString(arg));
-    messageThrowableConsumer.accept(ft.getMessage(), cause);
+    logInternal(format, new Object[] { arg });
   }
 
   public void log(String format, Object arg1, Object arg2) {
-    FormattingTuple ft = MessageFormatter.format(format, toString(arg1), toString(arg2));
-    messageThrowableConsumer.accept(ft.getMessage(), cause);
+    logInternal(format, new Object[] { arg1, arg2 });
+  }
+
+  public void log(String format, Object arg1, Object arg2, Object arg3) {
+    logInternal(format, new Object[] { arg1, arg2, arg3 });
+  }
+
+  public void log(String format, Object arg1, Object arg2, Object arg3, Object arg4) {
+    logInternal(format, new Object[] { arg1, arg2, arg3, arg4 });
+  }
+
+  public void log(String format, Object arg1, Object arg2, Object arg3, Object arg4, Object arg5) {
+    logInternal(format, new Object[] { arg1, arg2, arg3, arg4, arg5 });
   }
 
   public void log(String format, Object... args) {
+    logInternal(format, args);
+  }
+
+  private void logInternal(String format, Object[] args) {
     FormattingTuple ft = MessageFormatter.arrayFormat(format, toStrings(args));
     messageThrowableConsumer.accept(ft.getMessage(), cause);
   }

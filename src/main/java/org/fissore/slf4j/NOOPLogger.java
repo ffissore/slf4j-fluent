@@ -24,6 +24,18 @@ public class NOOPLogger extends LoggerAtLevel {
   }
 
   @Override
+  public void log(String format, Object arg1, Object arg2, Object arg3) {
+  }
+
+  @Override
+  public void log(String format, Object arg1, Object arg2, Object arg3, Object arg4) {
+  }
+
+  @Override
+  public void log(String format, Object arg1, Object arg2, Object arg3, Object arg4, Object arg5) {
+  }
+
+  @Override
   public void log(String format, Object... args) {
   }
 }
