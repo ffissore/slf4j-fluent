@@ -4,37 +4,51 @@ import org.slf4j.Logger;
 
 public class FluentLogger {
 
-  private final LoggerAtLevel infoLogger;
-  private final LoggerAtLevel debugLogger;
-  private final LoggerAtLevel errorLogger;
-  private final LoggerAtLevel traceLogger;
-  private final LoggerAtLevel warnLogger;
+  private static final NOOPLogger NOOP_LOGGER = new NOOPLogger();
+
+  private final Logger logger;
 
   public FluentLogger(Logger logger) {
-    this.infoLogger = new LoggerAtLevel(logger::isInfoEnabled, logger::info);
-    this.debugLogger = new LoggerAtLevel(logger::isDebugEnabled, logger::debug);
-    this.errorLogger = new LoggerAtLevel(logger::isErrorEnabled, logger::error);
-    this.traceLogger = new LoggerAtLevel(logger::isTraceEnabled, logger::trace);
-    this.warnLogger = new LoggerAtLevel(logger::isWarnEnabled, logger::warn);
+    this.logger = logger;
   }
 
-  public LoggerAtLevel atInfo() {
-    return infoLogger;
+  public LoggerAtLevel info() {
+    if (!logger.isInfoEnabled()) {
+      return NOOP_LOGGER;
+    }
+
+    return new LoggerAtLevel(logger::info);
   }
 
-  public LoggerAtLevel atDebug() {
-    return debugLogger;
+  public LoggerAtLevel debug() {
+    if (!logger.isDebugEnabled()) {
+      return NOOP_LOGGER;
+    }
+
+    return new LoggerAtLevel(logger::debug);
   }
 
-  public LoggerAtLevel atError() {
-    return errorLogger;
+  public LoggerAtLevel error() {
+    if (!logger.isErrorEnabled()) {
+      return NOOP_LOGGER;
+    }
+
+    return new LoggerAtLevel(logger::error);
   }
 
-  public LoggerAtLevel atTrace() {
-    return traceLogger;
+  public LoggerAtLevel trace() {
+    if (!logger.isTraceEnabled()) {
+      return NOOP_LOGGER;
+    }
+
+    return new LoggerAtLevel(logger::trace);
   }
 
-  public LoggerAtLevel atWarn() {
-    return warnLogger;
+  public LoggerAtLevel warn() {
+    if (!logger.isWarnEnabled()) {
+      return NOOP_LOGGER;
+    }
+
+    return new LoggerAtLevel(logger::warn);
   }
 }
