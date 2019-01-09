@@ -34,7 +34,7 @@ FluentLogger log = FluentLoggerFactory.getLogger(getClass());
 log.debug().log("A debug log entry with {} args: {}, {}", 2, "value 1", lazy(() -> someObject.expensiveMethod()));
 ```
 
-The `debug()` (or `error()`, `info()`, etc) method returns a no-op logger when the logger is not set at the appropriate level (which might lead Hotspot to optimize that method call)
+The `debug()` (and `error()`, `info()`, etc) method returns a no-op logger when the logger is not set at the appropriate level (which might lead Hotspot to optimize that method call)
 
 The `lazy(...)` syntax leverages lambdas to postpone argument evalution to the latest moment.
 
