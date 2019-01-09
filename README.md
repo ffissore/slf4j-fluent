@@ -31,10 +31,10 @@ By using `slf4j-fluent` together with slf4j, we can rewrite that code this way:
 ```java
 FluentLogger log = FluentLoggerFactory.getLogger(getClass());
 
-log.atDebug().log("A debug log entry with {} args: {}, {}", 2, "value 1", lazy(() -> someObject.expensiveMethod()));
+log.debug().log("A debug log entry with {} args: {}, {}", 2, "value 1", lazy(() -> someObject.expensiveMethod()));
 ```
 
-The `atDebug` (or `atError`, `atInfo`, etc) syntax returns a no-op logger when the logger is not set at the appropriate level (which might lead Hotspot to optimize that method call)
+The `debug()` (or `error()`, `info()`, etc) method returns a no-op logger when the logger is not set at the appropriate level (which might lead Hotspot to optimize that method call)
 
 The `lazy(...)` syntax leverages lambdas to postpone argument evalution to the latest moment.
 
@@ -66,9 +66,9 @@ Initialize FluentLogger and start logging
 ```java
 FluentLogger log = FluentLoggerFactory.getLogger(getClass());
 
-log.atDebug().log("A debug log entry with {} args: {}, {}", 2, "value 1", lazy(() -> someObject.expensiveMethod()));
+log.debug().log("A debug log entry with {} args: {}, {}", 2, "value 1", lazy(() -> someObject.expensiveMethod()));
 
-log.atError().withCause(exception).log("An error occured while fetching user {}", user.getId());
+log.error().withCause(exception).log("An error occured while fetching user {}", user.getId());
 ```
 
 ### Trivia
