@@ -1,7 +1,9 @@
-package org.fissore.slf4j;
+package org.fissore.test.slf4j;
 
 import ch.qos.logback.classic.Level;
 import ch.qos.logback.classic.spi.ILoggingEvent;
+import org.fissore.slf4j.FluentLogger;
+import org.fissore.slf4j.FluentLoggerFactory;
 import org.junit.Before;
 import org.junit.Test;
 

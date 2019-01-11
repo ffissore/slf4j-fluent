@@ -1,6 +1,6 @@
 <configuration>
 
-  <appender name="STDOUT" class="org.fissore.slf4j.TestConsoleAppender">
+  <appender name="STDOUT" class="org.fissore.test.slf4j.TestConsoleAppender">
     <encoder>
       <pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</pattern>
     </encoder>
@@ -24,7 +24,7 @@
     <appender-ref ref="STDOUT"/>
   </logger>
 
-  <appender name="LIST" class="org.fissore.slf4j.TestListAppender">
+  <appender name="LIST" class="org.fissore.test.slf4j.TestListAppender">
     <encoder>
       <pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</pattern>
     </encoder>

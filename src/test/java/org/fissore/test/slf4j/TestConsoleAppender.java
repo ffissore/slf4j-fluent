@@ -1,10 +1,8 @@
-package org.fissore.slf4j;
+package org.fissore.test.slf4j;
 
 import ch.qos.logback.classic.spi.ILoggingEvent;
 import ch.qos.logback.core.ConsoleAppender;
 
-import java.io.OutputStream;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Vector;
 
@@ -12,7 +10,7 @@ import java.util.Vector;
  * Hacky appender that will expose logged events via a public static var, thus allowing tests to check what was logged
  * Not thread safe
  */
-public class TestListAppender extends ConsoleAppender<ILoggingEvent> {
+public class TestConsoleAppender extends ConsoleAppender<ILoggingEvent> {
 
   public static final List<ILoggingEvent> EVENTS = new Vector<>();
 
@@ -26,14 +24,4 @@ public class TestListAppender extends ConsoleAppender<ILoggingEvent> {
     super.append(event);
   }
 
-  @Override
-  public void start() {
-    super.start();
-    setOutputStream(new OutputStream() {
-      @Override
-      public void write(int b) {
-
-      }
-    });
-  }
 }
