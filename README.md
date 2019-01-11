@@ -57,7 +57,7 @@ Add slf4j-fluent as a dependency to your project
 <dependency> 
   <groupId>org.fissore</groupId>
   <artifactId>slf4j-fluent</artifactId>
-  <version>0.4.0</version>
+  <version>0.5.0</version>
 </dependency>
 ```
 
@@ -68,7 +68,14 @@ FluentLogger log = FluentLoggerFactory.getLogger(getClass());
 
 log.debug().log("A debug log entry with {} args: {}, {}", 2, "value 1", lazy(() -> someObject.expensiveMethod()));
 
+// will add the stacktrace of the cause to the log entry
 log.error().withCause(exception).log("An error occured while fetching user {}", user.getId());
+
+// will log every 5 calls to `log` method, instead of every single time
+log.error().every(5).log("Errors occured, but we print only one entry every 5");
+
+// will log every 1 second, instead of every single time
+log.error().atMostEvery(1, ChronoUnit.SECONDS).log("Errors occured, but we print only one entry every 1 second");
 ```
 
 ### Trivia
