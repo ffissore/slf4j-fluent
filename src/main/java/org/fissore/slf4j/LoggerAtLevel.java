@@ -3,14 +3,42 @@ package org.fissore.slf4j;
 import org.slf4j.helpers.FormattingTuple;
 import org.slf4j.helpers.MessageFormatter;
 
+import java.time.temporal.ChronoUnit;
+import java.util.Arrays;
 import java.util.function.BiConsumer;
 import java.util.function.Supplier;
 
 public class LoggerAtLevel {
 
+  private static class LogAtMostEveryAmountOfTime {
+
+    private final long amount;
+    private final ChronoUnit unit;
+
+    public LogAtMostEveryAmountOfTime(long amount, ChronoUnit unit) {
+      this.amount = amount;
+      this.unit = unit;
+    }
+
+  }
+
+  private static class LogEveryNumberOfCalls {
+
+    private final int amount;
+
+    public LogEveryNumberOfCalls(int amount) {
+      this.amount = amount;
+    }
+
+  }
+
+  private static final LoggerStats LOGGER_STATS = new LoggerStats();
+
   private final BiConsumer<String, Throwable> messageThrowableConsumer;
 
   private Throwable cause;
+  private LogAtMostEveryAmountOfTime logAtMostEveryAmountOfTime;
+  private LogEveryNumberOfCalls logEveryNumberOfCalls;
 
   public LoggerAtLevel(BiConsumer<String, Throwable> messageThrowableConsumer) {
     this.messageThrowableConsumer = messageThrowableConsumer;
@@ -21,8 +49,26 @@ public class LoggerAtLevel {
     return this;
   }
 
+  public LoggerAtLevel atMostEvery(long amountOfTime, ChronoUnit unit) {
+    if (logEveryNumberOfCalls != null) {
+      throw new IllegalStateException("You cannot filter log by time frame AND number of calls: you must pick one");
+    }
+    this.logAtMostEveryAmountOfTime = new LogAtMostEveryAmountOfTime(amountOfTime, unit);
+    return this;
+  }
+
+  public LoggerAtLevel every(int amountOfCalls) {
+    if (logAtMostEveryAmountOfTime != null) {
+      throw new IllegalStateException("You cannot filter log by time frame AND number of calls: you must pick one");
+    }
+    this.logEveryNumberOfCalls = new LogEveryNumberOfCalls(amountOfCalls);
+    return this;
+  }
+
+  private static final Object[] EMPTY_ARRAY = new Object[0];
+
   public void log(String message) {
-    messageThrowableConsumer.accept(message, cause);
+    logInternal(message, EMPTY_ARRAY);
   }
 
   public void log(String format, Object arg) {
@@ -50,8 +96,36 @@ public class LoggerAtLevel {
   }
 
   private void logInternal(String format, Object[] args) {
+    if (logAtMostEveryAmountOfTime != null || logEveryNumberOfCalls != null) {
+      String caller = getCaller();
+      if (logEveryNumberOfCalls != null) {
+        LOGGER_STATS.recordCall(caller);
+        if (!LOGGER_STATS.numberOfCallsEquals(caller, logEveryNumberOfCalls.amount)) {
+          return;
+        }
+        LOGGER_STATS.resetCount(caller);
+      }
+
+      if (logAtMostEveryAmountOfTime != null) {
+        synchronized (LOGGER_STATS) {
+          if (!LOGGER_STATS.hasEnoughTimePassed(caller, logAtMostEveryAmountOfTime.amount, logAtMostEveryAmountOfTime.unit)) {
+            return;
+          }
+          LOGGER_STATS.recordTimestamp(caller);
+        }
+      }
+    }
+
     FormattingTuple ft = MessageFormatter.arrayFormat(format, toStrings(args));
     messageThrowableConsumer.accept(ft.getMessage(), cause);
+  }
+
+  private String getCaller() {
+    return Arrays.stream(new Throwable().getStackTrace())
+      .filter(trace -> !trace.getClassName().startsWith(LoggerAtLevel.class.getPackage().getName()))
+      .findFirst()
+      .map(trace -> trace.getClassName() + ":" + trace.getMethodName() + ":" + trace.getLineNumber())
+      .orElseThrow(IllegalStateException::new);
   }
 
   private Object toString(Object arg) {
