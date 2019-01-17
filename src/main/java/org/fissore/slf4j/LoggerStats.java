@@ -3,6 +3,7 @@ package org.fissore.slf4j;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 public class LoggerStats {
 
@@ -14,29 +15,24 @@ public class LoggerStats {
     counts = new ConcurrentHashMap<>();
   }
 
-  public boolean hasEnoughTimePassed(String caller, long amount, ChronoUnit unit) {
-    Instant timestamp = timestamps.get(caller);
-    if (timestamp == null) {
-      return true;
-    }
+  public boolean recordCallAndCheckIfEnoughTimePassed(String caller, long amount, ChronoUnit unit) {
+    Instant now = Instant.now();
 
-    return timestamp.plus(amount, unit).isBefore(Instant.now());
+    AtomicBoolean result = new AtomicBoolean(true);
+    timestamps.merge(caller, now, (previousTimestamp, _v) -> {
+      if (previousTimestamp.plus(amount, unit).isBefore(now)) {
+        return now;
+      }
+      result.set(false);
+      return previousTimestamp;
+    });
+
+    return result.get();
   }
 
-  public void recordTimestamp(String caller) {
-    timestamps.put(caller, Instant.now());
+  public boolean recordCallThenCheckIfNumberOfCallsMatchesAmount(String caller, int amount) {
+    Long countedCalls = counts.merge(caller, 1L, (currentCounts, _v) -> currentCounts + 1);
+    return countedCalls == 1 || countedCalls % amount == 0;
   }
 
-  public boolean numberOfCallsEquals(String caller, int amount) {
-    Long countedCalls = counts.get(caller);
-    return countedCalls != null && countedCalls == amount;
-  }
-
-  public void recordCall(String caller) {
-    counts.merge(caller, 1L, (currentCounts, _v) -> currentCounts + 1);
-  }
-
-  public void resetCount(String caller) {
-    counts.remove(caller);
-  }
 }

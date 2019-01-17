@@ -75,7 +75,7 @@ log.error().withCause(exception).log("An error occured while fetching user {}", 
 log.error().every(5).log("Errors occured, but we print only one entry every 5");
 
 // will log every 1 second, instead of every single time
-log.error().atMostEvery(1, ChronoUnit.SECONDS).log("Errors occured, but we print only one entry every 1 second");
+log.error().every(1, ChronoUnit.SECONDS).log("Errors occured, but we print only one entry every 1 second");
 ```
 
 ### Trivia

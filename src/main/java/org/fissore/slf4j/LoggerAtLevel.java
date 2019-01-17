@@ -10,12 +10,12 @@ import java.util.function.Supplier;
 
 public class LoggerAtLevel {
 
-  private static class LogAtMostEveryAmountOfTime {
+  private static class LogEveryAmountOfTime {
 
     private final long amount;
     private final ChronoUnit unit;
 
-    public LogAtMostEveryAmountOfTime(long amount, ChronoUnit unit) {
+    public LogEveryAmountOfTime(long amount, ChronoUnit unit) {
       this.amount = amount;
       this.unit = unit;
     }
@@ -37,7 +37,7 @@ public class LoggerAtLevel {
   private final BiConsumer<String, Throwable> messageThrowableConsumer;
 
   private Throwable cause;
-  private LogAtMostEveryAmountOfTime logAtMostEveryAmountOfTime;
+  private LogEveryAmountOfTime logEveryAmountOfTime;
   private LogEveryNumberOfCalls logEveryNumberOfCalls;
 
   public LoggerAtLevel(BiConsumer<String, Throwable> messageThrowableConsumer) {
@@ -49,16 +49,16 @@ public class LoggerAtLevel {
     return this;
   }
 
-  public LoggerAtLevel atMostEvery(long amountOfTime, ChronoUnit unit) {
+  public LoggerAtLevel every(long amountOfTime, ChronoUnit unit) {
     if (logEveryNumberOfCalls != null) {
       throw new IllegalStateException("You cannot filter log by time frame AND number of calls: you must pick one");
     }
-    this.logAtMostEveryAmountOfTime = new LogAtMostEveryAmountOfTime(amountOfTime, unit);
+    this.logEveryAmountOfTime = new LogEveryAmountOfTime(amountOfTime, unit);
     return this;
   }
 
   public LoggerAtLevel every(int amountOfCalls) {
-    if (logAtMostEveryAmountOfTime != null) {
+    if (logEveryAmountOfTime != null) {
       throw new IllegalStateException("You cannot filter log by time frame AND number of calls: you must pick one");
     }
     this.logEveryNumberOfCalls = new LogEveryNumberOfCalls(amountOfCalls);
@@ -96,23 +96,16 @@ public class LoggerAtLevel {
   }
 
   private void logInternal(String format, Object[] args) {
-    if (logAtMostEveryAmountOfTime != null || logEveryNumberOfCalls != null) {
+    if (logEveryAmountOfTime != null || logEveryNumberOfCalls != null) {
       String caller = getCaller();
-      if (logEveryNumberOfCalls != null) {
-        LOGGER_STATS.recordCall(caller);
-        if (!LOGGER_STATS.numberOfCallsEquals(caller, logEveryNumberOfCalls.amount)) {
-          return;
-        }
-        LOGGER_STATS.resetCount(caller);
+      if (logEveryNumberOfCalls != null
+        && !LOGGER_STATS.recordCallThenCheckIfNumberOfCallsMatchesAmount(caller, logEveryNumberOfCalls.amount)) {
+        return;
       }
 
-      if (logAtMostEveryAmountOfTime != null) {
-        synchronized (LOGGER_STATS) {
-          if (!LOGGER_STATS.hasEnoughTimePassed(caller, logAtMostEveryAmountOfTime.amount, logAtMostEveryAmountOfTime.unit)) {
-            return;
-          }
-          LOGGER_STATS.recordTimestamp(caller);
-        }
+      if (logEveryAmountOfTime != null
+        && !LOGGER_STATS.recordCallAndCheckIfEnoughTimePassed(caller, logEveryAmountOfTime.amount, logEveryAmountOfTime.unit)) {
+        return;
       }
     }
 

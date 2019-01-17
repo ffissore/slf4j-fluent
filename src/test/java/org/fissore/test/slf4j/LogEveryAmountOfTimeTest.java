@@ -9,7 +9,7 @@ import java.time.temporal.ChronoUnit;
 
 import static org.junit.Assert.assertEquals;
 
-public class LogAtMostEveryAmountOfTimeTest {
+public class LogEveryAmountOfTimeTest {
 
   @Before
   public void setUp() {
@@ -18,11 +18,11 @@ public class LogAtMostEveryAmountOfTimeTest {
   }
 
   @Test
-  public void atMostEveryOneSecond() {
+  public void everyOneSecond() {
     FluentLogger logger = FluentLoggerFactory.getLogger("org.fissore.slf4j.error.Test");
 
     for (int i = 0; i < 60; i++) {
-      logger.error().atMostEvery(1, ChronoUnit.SECONDS).log("error");
+      logger.error().every(1, ChronoUnit.SECONDS).log("error");
       sleep(50);
     }
 
@@ -30,11 +30,11 @@ public class LogAtMostEveryAmountOfTimeTest {
   }
 
   @Test
-  public void atMostEveryHalfSecond() {
+  public void everyHalfSecond() {
     FluentLogger logger = FluentLoggerFactory.getLogger("org.fissore.slf4j.error.Test");
 
     for (int i = 0; i < 60; i++) {
-      logger.error().atMostEvery(500, ChronoUnit.MILLIS).log("error");
+      logger.error().every(500, ChronoUnit.MILLIS).log("error");
       sleep(50);
     }
 
@@ -42,20 +42,20 @@ public class LogAtMostEveryAmountOfTimeTest {
   }
 
   @Test
-  public void atMostEveryConcurrent() throws Exception {
+  public void everyConcurrent() throws Exception {
     FluentLogger logger1 = FluentLoggerFactory.getLogger("org.fissore.slf4j.list.error.Test1");
     FluentLogger logger2 = FluentLoggerFactory.getLogger("org.fissore.slf4j.list.error.Test2");
 
     Thread t1 = new Thread(() -> {
       for (int i = 0; i < 60; i++) {
-        logger1.error().atMostEvery(1, ChronoUnit.SECONDS).log("error");
+        logger1.error().every(1, ChronoUnit.SECONDS).log("error");
         sleep(50);
       }
     });
 
     Thread t2 = new Thread(() -> {
       for (int i = 0; i < 60; i++) {
-        logger2.error().atMostEvery(500, ChronoUnit.MILLIS).log("error");
+        logger2.error().every(500, ChronoUnit.MILLIS).log("error");
         sleep(50);
       }
     });

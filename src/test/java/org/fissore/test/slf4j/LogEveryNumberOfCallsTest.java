@@ -23,7 +23,7 @@ public class LogEveryNumberOfCallsTest {
       logger.error().every(5).log("error");
     }
 
-    assertEquals(2, TestConsoleAppender.EVENTS.size());
+    assertEquals(3, TestConsoleAppender.EVENTS.size());
   }
 
   @Test
@@ -52,6 +52,6 @@ public class LogEveryNumberOfCallsTest {
     t1.join();
     t2.join();
 
-    assertEquals(iterations / t1Every + iterations / t2Every, TestListAppender.EVENTS.size());
+    assertEquals((1 + iterations / t1Every) + (1 + iterations / t2Every), TestListAppender.EVENTS.size());
   }
 }
