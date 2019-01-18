@@ -78,6 +78,13 @@ log.error().every(5).log("Errors occured, but we print only one entry every 5");
 log.error().every(1, ChronoUnit.SECONDS).log("Errors occured, but we print only one entry every 1 second");
 ```
 
-### Trivia
+## Trivia
 
 The fluent API looks a lot like that of [Flogger](https://github.com/google/flogger), which however has the downside of being yet-another-logging-framework.
+
+## Known issues
+
+Because slf4j-fluent **wraps** slf4j, the "calling class" slf4j will log will be `org.fissore.slf4j.LoggerAtLevel` rather than your class.
+If your logging framework pattern layout contains calling class information (for example `%C`, `%caller`, `%l`, `%L`, `%F`, `%M` in both logback and log4j), you'll get wrong log entries.
+
+There's no available fix at the moment. If that's a blocker, don't use slf4j-fluent.
