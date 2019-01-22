@@ -1,5 +1,8 @@
 package org.fissore.slf4j;
 
+/**
+ * A no-op logger is a logger that does nothing. {@link FluentLogger} has one statically initialized instance of this class, and will return it whenever the desired logging level is not enabled.
+ */
 public class NOOPLogger extends LoggerAtLevel {
 
   public NOOPLogger() {

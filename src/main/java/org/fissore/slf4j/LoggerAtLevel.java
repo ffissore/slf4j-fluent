@@ -8,6 +8,18 @@ import java.util.Arrays;
 import java.util.function.BiConsumer;
 import java.util.function.Supplier;
 
+/**
+ * This is where the fluent API of slf4j-fluent is implemented.
+ * With its methods we can build the log message, assign an exception to it, and specify logging limits such as quantity ("don't log this more than once every 5 times") or time ("don't log this more than once every 2 seconds").
+ * <p>
+ * In order to avoid implicit array creation when using varargs, this class provides a number overloaded version of the {@code log} method with increasing number of arguments.
+ * <p>
+ * {@code log} methods arguments can be of any type. If they are {@link Supplier}s, they will be called only when actually logging, thus providing lazy argument evaluation. Also see {@link Util#lazy(Supplier)}.
+ * <p>
+ * When filtering log entries based on quantity or time, we need to generate the "call site" which is the fully qualified name of the class, plus the name of the method calling the {@code log} method, plus the line number.
+ *
+ * @see Util#lazy(Supplier)
+ */
 public class LoggerAtLevel {
 
   private static class LogEveryAmountOfTime {
@@ -44,22 +56,49 @@ public class LoggerAtLevel {
     this.messageThrowableConsumer = messageThrowableConsumer;
   }
 
+  /**
+   * Associates an exception to this log entry.
+   *
+   * @param cause the exception we want to associate this log entry to
+   * @return this instance of {@link LoggerAtLevel}
+   */
   public LoggerAtLevel withCause(Throwable cause) {
     this.cause = cause;
     return this;
   }
 
+  /**
+   * Configures this {@link LoggerAtLevel} to log at most every amount of time.
+   * <p>
+   * For example, say we want to log at most every 2 seconds.
+   * If our code attempts to log multiple times for 5 seconds, we'll see only 3 log entries in our log files: the first one, the first one after 2 seconds, and the first one after 4 seconds.
+   *
+   * @param amountOfTime the amount of time to wait between log entries
+   * @param unit         the unit of time expressed by amountOfTime
+   * @return this instance of {@link LoggerAtLevel}
+   * @throws IllegalStateException if this {@link LoggerAtLevel} was already configured to limit logging by quantity
+   */
   public LoggerAtLevel every(long amountOfTime, ChronoUnit unit) {
     if (logEveryNumberOfCalls != null) {
-      throw new IllegalStateException("You cannot filter log by time frame AND number of calls: you must pick one");
+      throw new IllegalStateException("We cannot filter log by time frame AND number of calls: pick one please");
     }
     this.logEveryAmountOfTime = new LogEveryAmountOfTime(amountOfTime, unit);
     return this;
   }
 
+  /**
+   * Configures this {@link LoggerAtLevel} to log at most every number of times
+   * <p>
+   * For example, say we want to log at most every 5 times.
+   * If our code attempts to log 8 times, we'll see 2 log entries in our log files: the first one, and the fifth one.
+   *
+   * @param amountOfCalls the amount of calls that must be made before logging
+   * @return this instance of {@link LoggerAtLevel}
+   * @throws IllegalStateException if this {@link LoggerAtLevel} was already configured to limit logging by time
+   */
   public LoggerAtLevel every(int amountOfCalls) {
     if (logEveryAmountOfTime != null) {
-      throw new IllegalStateException("You cannot filter log by time frame AND number of calls: you must pick one");
+      throw new IllegalStateException("We cannot filter log by time frame AND number of calls: pick one please");
     }
     this.logEveryNumberOfCalls = new LogEveryNumberOfCalls(amountOfCalls);
     return this;
@@ -67,30 +106,81 @@ public class LoggerAtLevel {
 
   private static final Object[] EMPTY_ARRAY = new Object[0];
 
+  /**
+   * Logs a message with no params
+   *
+   * @param message the log message
+   */
   public void log(String message) {
     logInternal(message, EMPTY_ARRAY);
   }
 
+  /**
+   * Logs a message with one param
+   *
+   * @param format the log message
+   * @param arg    a log message param
+   */
   public void log(String format, Object arg) {
     logInternal(format, new Object[] { arg });
   }
 
+  /**
+   * Logs a message with two params
+   *
+   * @param format the log message
+   * @param arg1   a log message param
+   * @param arg2   a log message param
+   */
   public void log(String format, Object arg1, Object arg2) {
     logInternal(format, new Object[] { arg1, arg2 });
   }
 
+  /**
+   * Logs a message with three params
+   *
+   * @param format the log message
+   * @param arg1   a log message param
+   * @param arg2   a log message param
+   * @param arg3   a log message param
+   */
   public void log(String format, Object arg1, Object arg2, Object arg3) {
     logInternal(format, new Object[] { arg1, arg2, arg3 });
   }
 
+  /**
+   * Logs a message with four params
+   *
+   * @param format the log message
+   * @param arg1   a log message param
+   * @param arg2   a log message param
+   * @param arg3   a log message param
+   * @param arg4   a log message param
+   */
   public void log(String format, Object arg1, Object arg2, Object arg3, Object arg4) {
     logInternal(format, new Object[] { arg1, arg2, arg3, arg4 });
   }
 
+  /**
+   * Logs a message with five params
+   *
+   * @param format the log message
+   * @param arg1   a log message param
+   * @param arg2   a log message param
+   * @param arg3   a log message param
+   * @param arg4   a log message param
+   * @param arg5   a log message param
+   */
   public void log(String format, Object arg1, Object arg2, Object arg3, Object arg4, Object arg5) {
     logInternal(format, new Object[] { arg1, arg2, arg3, arg4, arg5 });
   }
 
+  /**
+   * Logs a message with varying number of params
+   *
+   * @param format the log message
+   * @param args   log message params
+   */
   public void log(String format, Object... args) {
     logInternal(format, args);
   }
