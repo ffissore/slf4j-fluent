@@ -6,7 +6,7 @@ package org.fissore.slf4j;
 public class NOOPLogger extends LoggerAtLevel {
 
   public NOOPLogger() {
-    super(null);
+    super(null, false, null, -1);
   }
 
   @Override

@@ -1,5 +1,6 @@
 package org.fissore.test.slf4j;
 
+import ch.qos.logback.classic.spi.ILoggingEvent;
 import org.fissore.slf4j.FluentLogger;
 import org.fissore.slf4j.FluentLoggerFactory;
 import org.junit.Before;
@@ -9,8 +10,9 @@ import java.util.function.Supplier;
 
 import static org.fissore.slf4j.Util.lazy;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
-public class ContentsLoggedTest {
+public class LoggedContentsTest {
 
   @Before
   public void setUp() {
@@ -33,6 +35,7 @@ public class ContentsLoggedTest {
     logger.error().withCause(new Exception()).log("error 2 args with exception {} {}", "one", (Supplier<?>) () -> "two");
 
     assertEquals(10, TestConsoleAppender.EVENTS.size());
+
     assertEquals("error no args", TestConsoleAppender.EVENTS.get(0).getFormattedMessage());
     assertEquals("error 1 arg one", TestConsoleAppender.EVENTS.get(1).getFormattedMessage());
     assertEquals("error 2 args one two", TestConsoleAppender.EVENTS.get(2).getFormattedMessage());
@@ -43,6 +46,15 @@ public class ContentsLoggedTest {
     assertEquals("error 6 args one null null four five six", TestConsoleAppender.EVENTS.get(7).getFormattedMessage());
     assertEquals("error null varargs", TestConsoleAppender.EVENTS.get(8).getFormattedMessage());
     assertEquals("error 2 args with exception one two", TestConsoleAppender.EVENTS.get(9).getFormattedMessage());
+
+    int lineNumber = 26;
+    for (ILoggingEvent event : TestConsoleAppender.EVENTS) {
+      assertTrue(event.getCallerData().length > 0);
+      assertEquals(getClass().getName(), event.getCallerData()[0].getClassName());
+      assertEquals("errorLoggerContents", event.getCallerData()[0].getMethodName());
+      assertEquals(lineNumber, event.getCallerData()[0].getLineNumber());
+      lineNumber++;
+    }
   }
 
 }

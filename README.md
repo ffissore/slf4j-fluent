@@ -59,7 +59,7 @@ Add slf4j-fluent as a dependency to your project
 <dependency> 
   <groupId>org.fissore</groupId>
   <artifactId>slf4j-fluent</artifactId>
-  <version>0.8.0</version>
+  <version>0.9.0</version>
 </dependency>
 ```
 
@@ -83,10 +83,3 @@ log.error().every(1, ChronoUnit.SECONDS).log("Errors occured, but we print only 
 ## Trivia
 
 The fluent API looks a lot like that of [Flogger](https://github.com/google/flogger), which however has the downside of being yet-another-logging-framework.
-
-## Known issues
-
-Because slf4j-fluent **wraps** slf4j, the "calling class" slf4j will log will be `org.fissore.slf4j.LoggerAtLevel` rather than your class.
-If your logging framework pattern layout contains calling class information (for example `%C`, `%caller`, `%l`, `%L`, `%F`, `%M` in both logback and log4j), you'll get wrong log entries.
-
-There's no available fix at the moment. If that's a blocker, don't use slf4j-fluent.
