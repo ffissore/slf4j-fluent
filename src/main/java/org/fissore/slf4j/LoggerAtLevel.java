@@ -1,7 +1,9 @@
 package org.fissore.slf4j;
 
+import org.slf4j.Logger;
 import org.slf4j.helpers.FormattingTuple;
 import org.slf4j.helpers.MessageFormatter;
+import org.slf4j.spi.LocationAwareLogger;
 
 import java.time.temporal.ChronoUnit;
 import java.util.Arrays;
@@ -44,16 +46,24 @@ public class LoggerAtLevel {
 
   }
 
+  private static final String FQCN = LoggerAtLevel.class.getName();
   private static final LoggerStats LOGGER_STATS = new LoggerStats();
+  private static final Object[] EMPTY_ARRAY = new Object[0];
 
   private final BiConsumer<String, Throwable> messageThrowableConsumer;
+  private final boolean isLocationAwareLogger;
+  private final Logger logger;
+  private final int level;
 
   private Throwable cause;
   private LogEveryAmountOfTime logEveryAmountOfTime;
   private LogEveryNumberOfCalls logEveryNumberOfCalls;
 
-  public LoggerAtLevel(BiConsumer<String, Throwable> messageThrowableConsumer) {
+  public LoggerAtLevel(BiConsumer<String, Throwable> messageThrowableConsumer, boolean isLocationAwareLogger, Logger logger, int level) {
     this.messageThrowableConsumer = messageThrowableConsumer;
+    this.isLocationAwareLogger = isLocationAwareLogger;
+    this.logger = logger;
+    this.level = level;
   }
 
   /**
@@ -103,8 +113,6 @@ public class LoggerAtLevel {
     this.logEveryNumberOfCalls = new LogEveryNumberOfCalls(amountOfCalls);
     return this;
   }
-
-  private static final Object[] EMPTY_ARRAY = new Object[0];
 
   /**
    * Logs a message with no params
@@ -200,7 +208,11 @@ public class LoggerAtLevel {
     }
 
     FormattingTuple ft = MessageFormatter.arrayFormat(format, toStrings(args));
-    messageThrowableConsumer.accept(ft.getMessage(), cause);
+    if (isLocationAwareLogger) {
+      ((LocationAwareLogger) logger).log(null, FQCN, level, ft.getMessage(), EMPTY_ARRAY, cause);
+    } else {
+      messageThrowableConsumer.accept(ft.getMessage(), cause);
+    }
   }
 
   private String getCaller() {
