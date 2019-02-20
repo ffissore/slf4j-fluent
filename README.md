@@ -1,6 +1,6 @@
 # slf4j-fluent, a fluent API for SLF4J
 
-[![Build Status](https://travis-ci.com/ffissore/slf4j-fluent.svg?branch=master)](https://travis-ci.com/ffissore/slf4j-fluent)
+[![Build Status](https://travis-ci.org/ffissore/slf4j-fluent.svg?branch=master)](https://travis-ci.com/ffissore/slf4j-fluent)
 ![License](https://img.shields.io/github/license/ffissore/slf4j-fluent.svg)
 ![Version](https://img.shields.io/maven-central/v/org.fissore/slf4j-fluent.svg)
 
