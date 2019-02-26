@@ -85,3 +85,7 @@ log.error().every(1, ChronoUnit.SECONDS).log("Errors occured, but we print only 
 ## Trivia
 
 The fluent API looks a lot like that of [Flogger](https://github.com/google/flogger), which however has the downside of being yet-another-logging-framework.
+
+## Changelog
+
+See [Changelog](CHANGELOG.md).
