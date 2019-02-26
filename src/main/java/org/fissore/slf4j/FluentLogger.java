@@ -34,7 +34,7 @@ public class FluentLogger {
       return NOOP_LOGGER;
     }
 
-    return new LoggerAtLevel(logger::info, isLocationAwareLogger, logger, LocationAwareLogger.INFO_INT);
+    return new LoggerAtLevel(logger::info, logger::info, isLocationAwareLogger, logger, LocationAwareLogger.INFO_INT);
   }
 
   /**
@@ -47,7 +47,7 @@ public class FluentLogger {
       return NOOP_LOGGER;
     }
 
-    return new LoggerAtLevel(logger::info, isLocationAwareLogger, logger, LocationAwareLogger.INFO_INT).withMarker(marker);
+    return new LoggerAtLevel(logger::info, logger::info, isLocationAwareLogger, logger, LocationAwareLogger.INFO_INT).withMarker(marker);
   }
 
   /**
@@ -60,7 +60,7 @@ public class FluentLogger {
       return NOOP_LOGGER;
     }
 
-    return new LoggerAtLevel(logger::debug, isLocationAwareLogger, logger, LocationAwareLogger.DEBUG_INT);
+    return new LoggerAtLevel(logger::debug, logger::debug, isLocationAwareLogger, logger, LocationAwareLogger.DEBUG_INT);
   }
 
   /**
@@ -73,7 +73,7 @@ public class FluentLogger {
       return NOOP_LOGGER;
     }
 
-    return new LoggerAtLevel(logger::debug, isLocationAwareLogger, logger, LocationAwareLogger.INFO_INT).withMarker(marker);
+    return new LoggerAtLevel(logger::debug, logger::debug, isLocationAwareLogger, logger, LocationAwareLogger.INFO_INT).withMarker(marker);
   }
 
   /**
@@ -86,7 +86,7 @@ public class FluentLogger {
       return NOOP_LOGGER;
     }
 
-    return new LoggerAtLevel(logger::error, isLocationAwareLogger, logger, LocationAwareLogger.ERROR_INT);
+    return new LoggerAtLevel(logger::error, logger::error, isLocationAwareLogger, logger, LocationAwareLogger.ERROR_INT);
   }
 
   /**
@@ -99,7 +99,7 @@ public class FluentLogger {
       return NOOP_LOGGER;
     }
 
-    return new LoggerAtLevel(logger::error, isLocationAwareLogger, logger, LocationAwareLogger.ERROR_INT).withMarker(marker);
+    return new LoggerAtLevel(logger::error, logger::error, isLocationAwareLogger, logger, LocationAwareLogger.ERROR_INT).withMarker(marker);
   }
 
   /**
@@ -112,7 +112,7 @@ public class FluentLogger {
       return NOOP_LOGGER;
     }
 
-    return new LoggerAtLevel(logger::trace, isLocationAwareLogger, logger, LocationAwareLogger.TRACE_INT);
+    return new LoggerAtLevel(logger::trace, logger::trace, isLocationAwareLogger, logger, LocationAwareLogger.TRACE_INT);
   }
 
   /**
@@ -125,7 +125,7 @@ public class FluentLogger {
       return NOOP_LOGGER;
     }
 
-    return new LoggerAtLevel(logger::trace, isLocationAwareLogger, logger, LocationAwareLogger.TRACE_INT).withMarker(marker);
+    return new LoggerAtLevel(logger::trace, logger::trace, isLocationAwareLogger, logger, LocationAwareLogger.TRACE_INT).withMarker(marker);
   }
 
   /**
@@ -138,7 +138,7 @@ public class FluentLogger {
       return NOOP_LOGGER;
     }
 
-    return new LoggerAtLevel(logger::warn, isLocationAwareLogger, logger, LocationAwareLogger.WARN_INT);
+    return new LoggerAtLevel(logger::warn, logger::warn, isLocationAwareLogger, logger, LocationAwareLogger.WARN_INT);
   }
 
   /**
@@ -151,6 +151,6 @@ public class FluentLogger {
       return NOOP_LOGGER;
     }
 
-    return new LoggerAtLevel(logger::warn, isLocationAwareLogger, logger, LocationAwareLogger.WARN_INT).withMarker(marker);
+    return new LoggerAtLevel(logger::warn, logger::warn, isLocationAwareLogger, logger, LocationAwareLogger.WARN_INT).withMarker(marker);
   }
 }

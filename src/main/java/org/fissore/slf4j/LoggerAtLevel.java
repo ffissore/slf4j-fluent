@@ -50,6 +50,7 @@ public class LoggerAtLevel {
   private static final Object[] EMPTY_ARRAY = new Object[0];
 
   private final BiConsumer<String, Object[]> loggerMethod;
+  private final TriConsumer<Marker, String, Object[]> loggerMethodWithMarker;
   private final boolean isLocationAwareLogger;
   private final Logger logger;
   private final int level;
@@ -59,8 +60,10 @@ public class LoggerAtLevel {
   private LogEveryAmountOfTime logEveryAmountOfTime;
   private LogEveryNumberOfCalls logEveryNumberOfCalls;
 
-  public LoggerAtLevel(BiConsumer<String, Object[]> loggerMethod, boolean isLocationAwareLogger, Logger logger, int level) {
+  public LoggerAtLevel(BiConsumer<String, Object[]> loggerMethod, TriConsumer<Marker, String, Object[]> loggerMethodWithMarker, boolean isLocationAwareLogger, Logger logger,
+    int level) {
     this.loggerMethod = loggerMethod;
+    this.loggerMethodWithMarker = loggerMethodWithMarker;
     this.isLocationAwareLogger = isLocationAwareLogger;
     this.logger = logger;
     this.level = level;
@@ -217,12 +220,16 @@ public class LoggerAtLevel {
       ((LocationAwareLogger) logger).log(marker, FQCN, level, format, args, cause);
     } else {
       Object[] newArgs = args;
-      if(cause != null) {
+      if (cause != null) {
         newArgs = new Object[args.length + 1];
         System.arraycopy(args, 0, newArgs, 0, args.length);
         newArgs[newArgs.length - 1] = cause;
       }
-      loggerMethod.accept(format, newArgs);
+      if (marker != null) {
+        loggerMethodWithMarker.accept(marker, format, newArgs);
+      } else {
+        loggerMethod.accept(format, newArgs);
+      }
     }
   }
 
