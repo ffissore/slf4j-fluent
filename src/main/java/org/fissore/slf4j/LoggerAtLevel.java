@@ -1,8 +1,7 @@
 package org.fissore.slf4j;
 
 import org.slf4j.Logger;
-import org.slf4j.helpers.FormattingTuple;
-import org.slf4j.helpers.MessageFormatter;
+import org.slf4j.Marker;
 import org.slf4j.spi.LocationAwareLogger;
 
 import java.time.temporal.ChronoUnit;
@@ -50,17 +49,18 @@ public class LoggerAtLevel {
   private static final LoggerStats LOGGER_STATS = new LoggerStats();
   private static final Object[] EMPTY_ARRAY = new Object[0];
 
-  private final BiConsumer<String, Throwable> messageThrowableConsumer;
+  private final BiConsumer<String, Object[]> loggerMethod;
   private final boolean isLocationAwareLogger;
   private final Logger logger;
   private final int level;
 
   private Throwable cause;
+  private Marker marker;
   private LogEveryAmountOfTime logEveryAmountOfTime;
   private LogEveryNumberOfCalls logEveryNumberOfCalls;
 
-  public LoggerAtLevel(BiConsumer<String, Throwable> messageThrowableConsumer, boolean isLocationAwareLogger, Logger logger, int level) {
-    this.messageThrowableConsumer = messageThrowableConsumer;
+  public LoggerAtLevel(BiConsumer<String, Object[]> loggerMethod, boolean isLocationAwareLogger, Logger logger, int level) {
+    this.loggerMethod = loggerMethod;
     this.isLocationAwareLogger = isLocationAwareLogger;
     this.logger = logger;
     this.level = level;
@@ -74,6 +74,11 @@ public class LoggerAtLevel {
    */
   public LoggerAtLevel withCause(Throwable cause) {
     this.cause = cause;
+    return this;
+  }
+
+  public LoggerAtLevel withMarker(Marker marker) {
+    this.marker = marker;
     return this;
   }
 
@@ -207,11 +212,17 @@ public class LoggerAtLevel {
       }
     }
 
-    FormattingTuple ft = MessageFormatter.arrayFormat(format, toStrings(args));
+    args = toStrings(args);
     if (isLocationAwareLogger) {
-      ((LocationAwareLogger) logger).log(null, FQCN, level, ft.getMessage(), EMPTY_ARRAY, cause);
+      ((LocationAwareLogger) logger).log(marker, FQCN, level, format, args, cause);
     } else {
-      messageThrowableConsumer.accept(ft.getMessage(), cause);
+      Object[] newArgs = args;
+      if(cause != null) {
+        newArgs = new Object[args.length + 1];
+        System.arraycopy(args, 0, newArgs, 0, args.length);
+        newArgs[newArgs.length - 1] = cause;
+      }
+      loggerMethod.accept(format, newArgs);
     }
   }
 

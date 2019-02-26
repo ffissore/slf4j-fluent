@@ -34,5 +34,16 @@
     <appender-ref ref="LIST"/>
   </logger>
 
+  <appender name="JSON" class="ch.qos.logback.core.ConsoleAppender">
+    <encoder class="org.fissore.test.slf4j.TestLogstashEncoder">
+      <includeMdcKeyName>mdc1</includeMdcKeyName>
+      <includeMdcKeyName>mdc2</includeMdcKeyName>
+    </encoder>
+  </appender>
+
+  <logger name="org.fissore.slf4j.json.error" level="error">
+    <appender-ref ref="JSON"/>
+  </logger>
+
   <root level="off"/>
 </configuration>

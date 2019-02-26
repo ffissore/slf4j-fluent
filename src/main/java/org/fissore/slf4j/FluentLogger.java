@@ -1,6 +1,7 @@
 package org.fissore.slf4j;
 
 import org.slf4j.Logger;
+import org.slf4j.Marker;
 import org.slf4j.spi.LocationAwareLogger;
 
 /**
@@ -37,6 +38,19 @@ public class FluentLogger {
   }
 
   /**
+   * Returns a {@link LoggerAtLevel}, configured with the given {@link Marker}, to log at the "info" level, if logging at "info" level is enabled also considering the given {@link Marker}. Returns a shared {@link NOOPLogger} otherwise.
+   *
+   * @return a new {@link LoggerAtLevel} or a shared {@link NOOPLogger}
+   */
+  public LoggerAtLevel info(Marker marker) {
+    if (!logger.isInfoEnabled(marker)) {
+      return NOOP_LOGGER;
+    }
+
+    return new LoggerAtLevel(logger::info, isLocationAwareLogger, logger, LocationAwareLogger.INFO_INT).withMarker(marker);
+  }
+
+  /**
    * Returns a {@link LoggerAtLevel} to log at the "debug" level, if logging at "debug" level is enabled. Returns a shared {@link NOOPLogger} otherwise.
    *
    * @return a new {@link LoggerAtLevel} or a shared {@link NOOPLogger}
@@ -47,6 +61,19 @@ public class FluentLogger {
     }
 
     return new LoggerAtLevel(logger::debug, isLocationAwareLogger, logger, LocationAwareLogger.DEBUG_INT);
+  }
+
+  /**
+   * Returns a {@link LoggerAtLevel}, configured with the given {@link Marker}, to log at the "debug" level, if logging at "debug" level is enabled also considering the given {@link Marker}. Returns a shared {@link NOOPLogger} otherwise.
+   *
+   * @return a new {@link LoggerAtLevel} or a shared {@link NOOPLogger}
+   */
+  public LoggerAtLevel debug(Marker marker) {
+    if (!logger.isDebugEnabled(marker)) {
+      return NOOP_LOGGER;
+    }
+
+    return new LoggerAtLevel(logger::debug, isLocationAwareLogger, logger, LocationAwareLogger.INFO_INT).withMarker(marker);
   }
 
   /**
@@ -63,6 +90,19 @@ public class FluentLogger {
   }
 
   /**
+   * Returns a {@link LoggerAtLevel}, configured with the given {@link Marker}, to log at the "error" level, if logging at "error" level is enabled also considering the given {@link Marker}. Returns a shared {@link NOOPLogger} otherwise.
+   *
+   * @return a new {@link LoggerAtLevel} or a shared {@link NOOPLogger}
+   */
+  public LoggerAtLevel error(Marker marker) {
+    if (!logger.isErrorEnabled(marker)) {
+      return NOOP_LOGGER;
+    }
+
+    return new LoggerAtLevel(logger::error, isLocationAwareLogger, logger, LocationAwareLogger.ERROR_INT).withMarker(marker);
+  }
+
+  /**
    * Returns a {@link LoggerAtLevel} to log at the "trace" level, if logging at "trace" level is enabled. Returns a shared {@link NOOPLogger} otherwise.
    *
    * @return a new {@link LoggerAtLevel} or a shared {@link NOOPLogger}
@@ -76,6 +116,19 @@ public class FluentLogger {
   }
 
   /**
+   * Returns a {@link LoggerAtLevel}, configured with the given {@link Marker}, to log at the "trace" level, if logging at "trace" level is enabled also considering the given {@link Marker}. Returns a shared {@link NOOPLogger} otherwise.
+   *
+   * @return a new {@link LoggerAtLevel} or a shared {@link NOOPLogger}
+   */
+  public LoggerAtLevel trace(Marker marker) {
+    if (!logger.isTraceEnabled(marker)) {
+      return NOOP_LOGGER;
+    }
+
+    return new LoggerAtLevel(logger::trace, isLocationAwareLogger, logger, LocationAwareLogger.TRACE_INT).withMarker(marker);
+  }
+
+  /**
    * Returns a {@link LoggerAtLevel} to log at the "warn" level, if logging at "warn" level is enabled. Returns a shared {@link NOOPLogger} otherwise.
    *
    * @return a new {@link LoggerAtLevel} or a shared {@link NOOPLogger}
@@ -86,5 +139,18 @@ public class FluentLogger {
     }
 
     return new LoggerAtLevel(logger::warn, isLocationAwareLogger, logger, LocationAwareLogger.WARN_INT);
+  }
+
+  /**
+   * Returns a {@link LoggerAtLevel}, configured with the given {@link Marker}, to log at the "warn" level, if logging at "warn" level is enabled also considering the given {@link Marker}. Returns a shared {@link NOOPLogger} otherwise.
+   *
+   * @return a new {@link LoggerAtLevel} or a shared {@link NOOPLogger}
+   */
+  public LoggerAtLevel warn(Marker marker) {
+    if (!logger.isWarnEnabled(marker)) {
+      return NOOP_LOGGER;
+    }
+
+    return new LoggerAtLevel(logger::warn, isLocationAwareLogger, logger, LocationAwareLogger.WARN_INT).withMarker(marker);
   }
 }
