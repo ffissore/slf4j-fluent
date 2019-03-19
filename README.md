@@ -3,6 +3,8 @@
 [![Build Status](https://travis-ci.org/ffissore/slf4j-fluent.svg?branch=master)](https://travis-ci.org/ffissore/slf4j-fluent)
 ![License](https://img.shields.io/github/license/ffissore/slf4j-fluent.svg)
 ![Version](https://img.shields.io/maven-central/v/org.fissore/slf4j-fluent.svg)
+[![security status](https://www.meterian.com/badge/gh/ffissore/slf4j-fluent/security)](https://www.meterian.com/report/gh/ffissore/slf4j-fluent)
+[![stability status](https://www.meterian.com/badge/gh/ffissore/slf4j-fluent/stability)](https://www.meterian.com/report/gh/ffissore/slf4j-fluent)
 
 slf4j-fluent provides a fluent API for [SLF4J](https://www.slf4j.org/).
 
