@@ -48,3 +48,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [0.11.0] - 2019-02-18
 ### Fixed
 - Missing marker usage by non location aware loggers
+
+## [0.12.0] - 2019-03-19
+### Security
+- Updated slf4j version
