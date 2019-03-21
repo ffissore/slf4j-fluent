@@ -1,7 +1,7 @@
 /**
- * slf4j-fluent provides a fluent API for SLF4J {@link https://www.slf4j.org/}.
+ * slf4j-fluent provides a fluent API for <a href="https://www.slf4j.org" target="_blank">SLF4J</a>
  *
- * <h4>Example code:</h4>
+ * <h3>Example code:</h3>
  * <pre>
  * import static org.fissore.slf4j.Util.lazy;
  *
@@ -9,7 +9,7 @@
  *
  * FluentLogger log = FluentLoggerFactory.getLogger(getClass());
  *
- * log.debug().log("A debug log entry with {} args: {}, {}", 2, "value 1", lazy(() -> someObject.expensiveMethod()));
+ * log.debug().log("A debug log entry with {} args: {}, {}", 2, "value 1", lazy(() -&gt; someObject.expensiveMethod()));
  *
  * // will add the stacktrace of the cause to the log entry
  * log.error().withCause(exception).log("An error occured while fetching user {}", user.getId());

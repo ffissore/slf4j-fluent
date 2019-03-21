@@ -11,7 +11,7 @@ public class Util {
    *
    * ...
    *
-   * logger.error().log("This is a {}", lazy(() -> "test"));
+   * logger.error().log("This is a {}", lazy(() -&gt; "test"));
    * </pre>
    *
    * @param supplier the lambda to cast
