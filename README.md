@@ -15,7 +15,7 @@ As slf4j users, we are used to write code like the following:
 ```java
 Logger log = LoggerFactory.getLogger(getClass());
 
-log.debug("A debug statement with {} args: {}, {}", 2, "value 1", someObject.expensiveMethod());
+log.debug("debug entry with {} args: {}, {}", 2, "value 1", someObject.expensiveMethod());
 ```
 
 This code has 2 problems: 
@@ -26,7 +26,7 @@ Current solution is to wrap that code this way:
 
 ```java
 if (log.isDebugEnabled()) {
-    log.debug("A debug log entry with {} args: {}, {}", 2, "value 1", someObject.expensiveMethod());    
+    log.debug("debug entry with {} args: {}, {}", 2, "value 1", someObject.expensiveMethod());
 }
 ```
 
@@ -37,7 +37,7 @@ By using `slf4j-fluent` together with slf4j, we can rewrite that code this way:
 ```java
 FluentLogger log = FluentLoggerFactory.getLogger(getClass());
 
-log.debug().log("A debug log entry with {} args: {}, {}", 2, "value 1", lazy(() -> someObject.expensiveMethod()));
+log.debug().log("debug entry with {} args: {}, {}", 2, "value 1", lazy(() -> someObject.expensiveMethod()));
 ```
 
 The `debug()` (and `error()`, `info()`, etc) method returns a no-op logger when the logger is not set at the appropriate level (which might lead Hotspot to optimize that method call).
@@ -58,7 +58,7 @@ Add slf4j-fluent as a dependency to your project
 <dependency> 
   <groupId>org.slf4j</groupId>
   <artifactId>slf4j-log4j12</artifactId>
-  <version>1.7.25</version>
+  <version>1.7.26</version>
 </dependency>
 <dependency> 
   <groupId>org.fissore</groupId>
@@ -72,7 +72,7 @@ Initialize FluentLogger and start logging
 ```java
 FluentLogger log = FluentLoggerFactory.getLogger(getClass());
 
-log.debug().log("A debug log entry with {} args: {}, {}", 2, "value 1", lazy(() -> someObject.expensiveMethod()));
+log.debug().log("debug entry with {} args: {}, {}", 2, "value 1", lazy(() -> someObject.expensiveMethod()));
 
 // will add the stacktrace of the cause to the log entry
 log.error().withCause(exception).log("An error occured while fetching user {}", user.getId());
