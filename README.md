@@ -44,6 +44,8 @@ The `debug()` (and `error()`, `info()`, etc) method returns a no-op logger when 
 
 The `lazy(...)` syntax leverages lambdas to postpone argument evaluation to the latest moment.
 
+The `log()` method has overloads with up to 5 arguments, so [the cost of varargs](https://stackoverflow.com/questions/2426455/javas-varargs-performance) is postponed. If 5 is not enough, open an issue and we'll add more.
+
 ## Requirements
 
 slf4j-fluent requires java 8 as it uses lambdas.
