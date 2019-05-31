@@ -132,6 +132,15 @@ public class LoggerAtLevel {
   }
 
   /**
+   * Logs a message with no params
+   *
+   * @param messageSupplier the log message supplier
+   */
+  public void log(Supplier<String> messageSupplier) {
+    logInternal(messageSupplier.get(), EMPTY_ARRAY);
+  }
+
+  /**
    * Logs a message with one param
    *
    * @param format the log message
@@ -139,6 +148,16 @@ public class LoggerAtLevel {
    */
   public void log(String format, Object arg) {
     logInternal(format, new Object[] { arg });
+  }
+
+  /**
+   * Logs a message with one param
+   *
+   * @param formatSupplier the log message supplier
+   * @param arg            a log message param
+   */
+  public void log(Supplier<String> formatSupplier, Object arg) {
+    logInternal(formatSupplier.get(), new Object[] { arg });
   }
 
   /**
@@ -150,6 +169,17 @@ public class LoggerAtLevel {
    */
   public void log(String format, Object arg1, Object arg2) {
     logInternal(format, new Object[] { arg1, arg2 });
+  }
+
+  /**
+   * Logs a message with two params
+   *
+   * @param formatSupplier the log message supplier
+   * @param arg1           a log message param
+   * @param arg2           a log message param
+   */
+  public void log(Supplier<String> formatSupplier, Object arg1, Object arg2) {
+    logInternal(formatSupplier.get(), new Object[] { arg1, arg2 });
   }
 
   /**
@@ -165,6 +195,18 @@ public class LoggerAtLevel {
   }
 
   /**
+   * Logs a message with three params
+   *
+   * @param formatSupplier the log message supplier
+   * @param arg1           a log message param
+   * @param arg2           a log message param
+   * @param arg3           a log message param
+   */
+  public void log(Supplier<String> formatSupplier, Object arg1, Object arg2, Object arg3) {
+    logInternal(formatSupplier.get(), new Object[] { arg1, arg2, arg3 });
+  }
+
+  /**
    * Logs a message with four params
    *
    * @param format the log message
@@ -175,6 +217,19 @@ public class LoggerAtLevel {
    */
   public void log(String format, Object arg1, Object arg2, Object arg3, Object arg4) {
     logInternal(format, new Object[] { arg1, arg2, arg3, arg4 });
+  }
+
+  /**
+   * Logs a message with four params
+   *
+   * @param formatSupplier the log message supplier
+   * @param arg1           a log message param
+   * @param arg2           a log message param
+   * @param arg3           a log message param
+   * @param arg4           a log message param
+   */
+  public void log(Supplier<String> formatSupplier, Object arg1, Object arg2, Object arg3, Object arg4) {
+    logInternal(formatSupplier.get(), new Object[] { arg1, arg2, arg3, arg4 });
   }
 
   /**
@@ -192,6 +247,20 @@ public class LoggerAtLevel {
   }
 
   /**
+   * Logs a message with five params
+   *
+   * @param formatSupplier the log message supplier
+   * @param arg1           a log message param
+   * @param arg2           a log message param
+   * @param arg3           a log message param
+   * @param arg4           a log message param
+   * @param arg5           a log message param
+   */
+  public void log(Supplier<String> formatSupplier, Object arg1, Object arg2, Object arg3, Object arg4, Object arg5) {
+    logInternal(formatSupplier.get(), new Object[] { arg1, arg2, arg3, arg4, arg5 });
+  }
+
+  /**
    * Logs a message with varying number of params
    *
    * @param format the log message
@@ -199,6 +268,16 @@ public class LoggerAtLevel {
    */
   public void log(String format, Object... args) {
     logInternal(format, args);
+  }
+
+  /**
+   * Logs a message with varying number of params
+   *
+   * @param formatSupplier the log message supplier
+   * @param args           log message params
+   */
+  public void log(Supplier<String> formatSupplier, Object... args) {
+    logInternal(formatSupplier.get(), args);
   }
 
   private void logInternal(String format, Object[] args) {

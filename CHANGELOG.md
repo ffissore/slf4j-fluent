@@ -52,3 +52,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [0.12.0] - 2019-03-19
 ### Security
 - Updated slf4j version
+
+## [0.13.0] - 2019-05-31
+### Added
+- Log messages can now be provided by a Supplier. E.g.: `logger.info().log(() -> "Log this")`

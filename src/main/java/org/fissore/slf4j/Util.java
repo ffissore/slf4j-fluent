@@ -4,6 +4,9 @@ import java.util.function.Supplier;
 
 public class Util {
 
+  private Util() {
+  }
+
   /**
    * Casts a lambda to a Supplier. Best used once statically imported.
    * <pre>

@@ -40,6 +40,14 @@ FluentLogger log = FluentLoggerFactory.getLogger(getClass());
 log.debug().log("debug entry with {} args: {}, {}", 2, "value 1", lazy(() -> someObject.expensiveMethod()));
 ```
 
+Since 0.13.0, even log messages can be lazily supplied, so we can write
+
+```java
+log.debug().log(() -> "debug entry with {} args: {}, {}", 2, "value 1", lazy(() -> someObject.expensiveMethod()));
+```
+
+which makes more sense in languages that provide string templates, such as Kotlin.
+
 The `debug()` (and `error()`, `info()`, etc) method returns a no-op logger when the logger is not set at the appropriate level (which might lead Hotspot to optimize that method call).
 
 The `lazy(...)` syntax leverages lambdas to postpone argument evaluation to the latest moment.

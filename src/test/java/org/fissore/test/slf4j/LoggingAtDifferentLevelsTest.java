@@ -35,8 +35,8 @@ public class LoggingAtDifferentLevelsTest {
 
     tryLoggingAtAllLevels(logger);
 
-    assertEquals(5, TestConsoleAppender.EVENTS.size());
-    assertEquals(5, loggedEventsOfLevel(TestConsoleAppender.EVENTS, Level.ERROR_INT).size());
+    assertEquals(10, TestConsoleAppender.EVENTS.size());
+    assertEquals(10, loggedEventsOfLevel(TestConsoleAppender.EVENTS, Level.ERROR_INT).size());
   }
 
   @Test
@@ -45,9 +45,9 @@ public class LoggingAtDifferentLevelsTest {
 
     tryLoggingAtAllLevels(logger);
 
-    assertEquals(10, TestConsoleAppender.EVENTS.size());
-    assertEquals(5, loggedEventsOfLevel(TestConsoleAppender.EVENTS, Level.ERROR_INT).size());
-    assertEquals(5, loggedEventsOfLevel(TestConsoleAppender.EVENTS, Level.WARN_INT).size());
+    assertEquals(20, TestConsoleAppender.EVENTS.size());
+    assertEquals(10, loggedEventsOfLevel(TestConsoleAppender.EVENTS, Level.ERROR_INT).size());
+    assertEquals(10, loggedEventsOfLevel(TestConsoleAppender.EVENTS, Level.WARN_INT).size());
   }
 
   @Test
@@ -56,10 +56,10 @@ public class LoggingAtDifferentLevelsTest {
 
     tryLoggingAtAllLevels(logger);
 
-    assertEquals(15, TestConsoleAppender.EVENTS.size());
-    assertEquals(5, loggedEventsOfLevel(TestConsoleAppender.EVENTS, Level.ERROR_INT).size());
-    assertEquals(5, loggedEventsOfLevel(TestConsoleAppender.EVENTS, Level.WARN_INT).size());
-    assertEquals(5, loggedEventsOfLevel(TestConsoleAppender.EVENTS, Level.INFO_INT).size());
+    assertEquals(30, TestConsoleAppender.EVENTS.size());
+    assertEquals(10, loggedEventsOfLevel(TestConsoleAppender.EVENTS, Level.ERROR_INT).size());
+    assertEquals(10, loggedEventsOfLevel(TestConsoleAppender.EVENTS, Level.WARN_INT).size());
+    assertEquals(10, loggedEventsOfLevel(TestConsoleAppender.EVENTS, Level.INFO_INT).size());
   }
 
   @Test
@@ -68,11 +68,11 @@ public class LoggingAtDifferentLevelsTest {
 
     tryLoggingAtAllLevels(logger);
 
-    assertEquals(20, TestConsoleAppender.EVENTS.size());
-    assertEquals(5, loggedEventsOfLevel(TestConsoleAppender.EVENTS, Level.ERROR_INT).size());
-    assertEquals(5, loggedEventsOfLevel(TestConsoleAppender.EVENTS, Level.WARN_INT).size());
-    assertEquals(5, loggedEventsOfLevel(TestConsoleAppender.EVENTS, Level.INFO_INT).size());
-    assertEquals(5, loggedEventsOfLevel(TestConsoleAppender.EVENTS, Level.DEBUG_INT).size());
+    assertEquals(40, TestConsoleAppender.EVENTS.size());
+    assertEquals(10, loggedEventsOfLevel(TestConsoleAppender.EVENTS, Level.ERROR_INT).size());
+    assertEquals(10, loggedEventsOfLevel(TestConsoleAppender.EVENTS, Level.WARN_INT).size());
+    assertEquals(10, loggedEventsOfLevel(TestConsoleAppender.EVENTS, Level.INFO_INT).size());
+    assertEquals(10, loggedEventsOfLevel(TestConsoleAppender.EVENTS, Level.DEBUG_INT).size());
   }
 
   @Test
@@ -81,12 +81,12 @@ public class LoggingAtDifferentLevelsTest {
 
     tryLoggingAtAllLevels(logger);
 
-    assertEquals(25, TestConsoleAppender.EVENTS.size());
-    assertEquals(5, loggedEventsOfLevel(TestConsoleAppender.EVENTS, Level.ERROR_INT).size());
-    assertEquals(5, loggedEventsOfLevel(TestConsoleAppender.EVENTS, Level.WARN_INT).size());
-    assertEquals(5, loggedEventsOfLevel(TestConsoleAppender.EVENTS, Level.INFO_INT).size());
-    assertEquals(5, loggedEventsOfLevel(TestConsoleAppender.EVENTS, Level.DEBUG_INT).size());
-    assertEquals(5, loggedEventsOfLevel(TestConsoleAppender.EVENTS, Level.TRACE_INT).size());
+    assertEquals(50, TestConsoleAppender.EVENTS.size());
+    assertEquals(10, loggedEventsOfLevel(TestConsoleAppender.EVENTS, Level.ERROR_INT).size());
+    assertEquals(10, loggedEventsOfLevel(TestConsoleAppender.EVENTS, Level.WARN_INT).size());
+    assertEquals(10, loggedEventsOfLevel(TestConsoleAppender.EVENTS, Level.INFO_INT).size());
+    assertEquals(10, loggedEventsOfLevel(TestConsoleAppender.EVENTS, Level.DEBUG_INT).size());
+    assertEquals(10, loggedEventsOfLevel(TestConsoleAppender.EVENTS, Level.TRACE_INT).size());
   }
 
   private List<ILoggingEvent> loggedEventsOfLevel(List<ILoggingEvent> events, int targetLevelInt) {
@@ -97,33 +97,58 @@ public class LoggingAtDifferentLevelsTest {
 
   private void tryLoggingAtAllLevels(FluentLogger logger) {
     logger.error().log("error no args");
+    logger.error().log(() -> "error no args");
     logger.error().log("error 1 arg {}", "one");
+    logger.error().log(() -> "error 1 arg {}", "one");
     logger.error().log("error 2 args {} {}", "one", lazy(() -> "two"));
+    logger.error().log(() -> "error 2 args {} {}", "one", lazy(() -> "two"));
     logger.error().log("error 3 args {} {} {}", "one", lazy(() -> "two"), "three");
+    logger.error().log(() -> "error 3 args {} {} {}", "one", lazy(() -> "two"), "three");
     logger.error().withCause(new Exception()).log("error 2 args with exception {} {}", "one", lazy(() -> "two"));
+    logger.error().withCause(new Exception()).log(() -> "error 2 args with exception {} {}", "one", lazy(() -> "two"));
 
     logger.warn().log("warn no args");
+    logger.warn().log(() -> "warn no args");
     logger.warn().log("warn 1 arg {}", "one");
+    logger.warn().log(() -> "warn 1 arg {}", "one");
     logger.warn().log("warn 2 args {} {}", "one", lazy(() -> "two"));
+    logger.warn().log(() -> "warn 2 args {} {}", "one", lazy(() -> "two"));
     logger.warn().log("warn 3 args {} {} {}", "one", lazy(() -> "two"), "three");
+    logger.warn().log(() -> "warn 3 args {} {} {}", "one", lazy(() -> "two"), "three");
     logger.warn().withCause(new Exception()).log("warn 2 args with exception {} {}", "one", lazy(() -> "two"));
+    logger.warn().withCause(new Exception()).log(() -> "warn 2 args with exception {} {}", "one", lazy(() -> "two"));
 
     logger.info().log("info no args");
+    logger.info().log(() -> "info no args");
     logger.info().log("info 1 arg {}", "one");
+    logger.info().log(() -> "info 1 arg {}", "one");
     logger.info().log("info 2 args {} {}", "one", lazy(() -> "two"));
+    logger.info().log(() -> "info 2 args {} {}", "one", lazy(() -> "two"));
     logger.info().log("info 3 args {} {} {}", "one", lazy(() -> "two"), "three");
+    logger.info().log(() -> "info 3 args {} {} {}", "one", lazy(() -> "two"), "three");
     logger.info().withCause(new Exception()).log("info 2 args with exception {} {}", "one", lazy(() -> "two"));
+    logger.info().withCause(new Exception()).log(() -> "info 2 args with exception {} {}", "one", lazy(() -> "two"));
 
     logger.debug().log("debug no args");
+    logger.debug().log(() -> "debug no args");
     logger.debug().log("debug 1 arg {}", "one");
+    logger.debug().log(() -> "debug 1 arg {}", "one");
     logger.debug().log("debug 2 args {} {}", "one", lazy(() -> "two"));
+    logger.debug().log(() -> "debug 2 args {} {}", "one", lazy(() -> "two"));
     logger.debug().log("debug 3 args {} {} {}", "one", lazy(() -> "two"), "three");
+    logger.debug().log(() -> "debug 3 args {} {} {}", "one", lazy(() -> "two"), "three");
     logger.debug().withCause(new Exception()).log("debug 2 args with exception {} {}", "one", lazy(() -> "two"));
+    logger.debug().withCause(new Exception()).log(() -> "debug 2 args with exception {} {}", "one", lazy(() -> "two"));
 
     logger.trace().log("trace no args");
+    logger.trace().log(() -> "trace no args");
     logger.trace().log("trace 1 arg {}", "one");
+    logger.trace().log(() -> "trace 1 arg {}", "one");
     logger.trace().log("trace 2 args {} {}", "one", lazy(() -> "two"));
+    logger.trace().log(() -> "trace 2 args {} {}", "one", lazy(() -> "two"));
     logger.trace().log("trace 3 args {} {} {}", "one", lazy(() -> "two"), "three");
+    logger.trace().log(() -> "trace 3 args {} {} {}", "one", lazy(() -> "two"), "three");
     logger.trace().withCause(new Exception()).log("trace 2 args with exception {} {}", "one", lazy(() -> "two"));
+    logger.trace().withCause(new Exception()).log(() -> "trace 2 args with exception {} {}", "one", lazy(() -> "two"));
   }
 }
