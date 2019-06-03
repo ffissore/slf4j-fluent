@@ -40,19 +40,46 @@ FluentLogger log = FluentLoggerFactory.getLogger(getClass());
 log.debug().log("debug entry with {} args: {}, {}", 2, "value 1", lazy(() -> someObject.expensiveMethod()));
 ```
 
-Since 0.13.0, even log messages can be lazily supplied, so we can write
-
-```java
-log.debug().log(() -> "debug entry with {} args: {}, {}", 2, "value 1", lazy(() -> someObject.expensiveMethod()));
-```
-
-which makes more sense in languages that provide string templates, such as Kotlin.
-
 The `debug()` (and `error()`, `info()`, etc) method returns a no-op logger when the logger is not set at the appropriate level (which might lead Hotspot to optimize that method call).
 
 The `lazy(...)` syntax leverages lambdas to postpone argument evaluation to the latest moment.
 
 The `log()` method has overloads with up to 5 arguments, so [the cost of varargs](https://stackoverflow.com/questions/2426455/javas-varargs-performance) is postponed. If 5 is not enough, open an issue and we'll add more.
+
+## Examples
+
+```java
+import static org.fissore.slf4j.Util.lazy;
+[...]
+FluentLogger log = FluentLoggerFactory.getLogger(getClass());
+
+// simple log
+log.debug().log("debug with no args");
+
+// log with args
+String hello = "Hello world";
+log.info().log("info with normal arg: {}", hello);
+
+// log with lazy args
+String norm = "norm";
+log.error().log("error with normal arg: {}, and lazy arg {}", norm, lazy(() -> "lazy arg which takes a while to compute"));
+
+// log with lazy message (available since 0.13.0)
+log.warn().log(() -> "a lazy warning message");
+
+// log with cause
+Exception e = new Exception();
+log.error().withCause(e).log("An error occured");
+
+// rate limiting: log at most every 500 millis
+log.error().every(500, ChronoUnit.MILLIS).log("This error will be logged at most every 500 millis");
+
+// rate limiting: log at most every 5 calls
+log.error().every(5).log("This error will be logged every 5 times the `log` method is called");
+
+// all together
+log.error().withCause(new Exception()).every(10).log(() -> "error with normal arg: {}, and lazy arg {}", norm, lazy(() -> "lazy arg which takes a while to compute"));
+```
 
 ## Requirements
 
