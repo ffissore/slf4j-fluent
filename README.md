@@ -95,12 +95,12 @@ Add slf4j-fluent as a dependency to your project
 <dependency> 
   <groupId>org.slf4j</groupId>
   <artifactId>slf4j-log4j12</artifactId>
-  <version>1.7.28</version>
+  <version>1.7.29</version>
 </dependency>
 <dependency> 
   <groupId>org.fissore</groupId>
   <artifactId>slf4j-fluent</artifactId>
-  <version>0.13.1</version>
+  <version>0.13.2</version>
 </dependency>
 ```
 
