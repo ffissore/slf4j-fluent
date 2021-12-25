@@ -55,19 +55,19 @@
     <maven.compiler.source>${jdk.version}</maven.compiler.source>
     <maven.compiler.target>${jdk.version}</maven.compiler.target>
 
-    <slf4j-api.version>1.7.30</slf4j-api.version>
-    <junit.version>4.13.1</junit.version>
-    <logback-classic.version>1.2.3</logback-classic.version>
-    <logstash-logback-encoder.version>6.3</logstash-logback-encoder.version>
+    <slf4j-api.version>1.7.32</slf4j-api.version>
+    <junit.version>4.13.2</junit.version>
+    <logback-classic.version>1.2.9</logback-classic.version>
+    <logstash-logback-encoder.version>7.0.1</logstash-logback-encoder.version>
 
     <maven-compiler-plugin.version>3.8.1</maven-compiler-plugin.version>
-    <pitest-maven.version>1.4.8</pitest-maven.version>
-    <jacoco-maven-plugin.version>0.8.4</jacoco-maven-plugin.version>
+    <pitest-maven.version>1.7.3</pitest-maven.version>
+    <jacoco-maven-plugin.version>0.8.7</jacoco-maven-plugin.version>
     <nexus-staging-maven-plugin.version>1.6.8</nexus-staging-maven-plugin.version>
-    <maven-source-plugin.version>3.1.0</maven-source-plugin.version>
-    <maven-javadoc-plugin.version>3.1.0</maven-javadoc-plugin.version>
-    <maven-gpg-plugin.version>1.6</maven-gpg-plugin.version>
-    <maven-jar-plugin.version>3.1.2</maven-jar-plugin.version>
+    <maven-source-plugin.version>3.2.1</maven-source-plugin.version>
+    <maven-javadoc-plugin.version>3.3.1</maven-javadoc-plugin.version>
+    <maven-gpg-plugin.version>3.0.1</maven-gpg-plugin.version>
+    <maven-jar-plugin.version>3.2.0</maven-jar-plugin.version>
   </properties>
 
   <dependencies>
