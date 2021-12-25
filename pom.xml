@@ -61,7 +61,7 @@
     <logstash-logback-encoder.version>6.3</logstash-logback-encoder.version>
 
     <maven-compiler-plugin.version>3.8.1</maven-compiler-plugin.version>
-    <pitest-maven.version>1.4.8</pitest-maven.version>
+    <pitest-maven.version>1.7.3</pitest-maven.version>
     <jacoco-maven-plugin.version>0.8.4</jacoco-maven-plugin.version>
     <nexus-staging-maven-plugin.version>1.6.8</nexus-staging-maven-plugin.version>
     <maven-source-plugin.version>3.1.0</maven-source-plugin.version>
