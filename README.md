@@ -8,45 +8,41 @@
 
 slf4j-fluent provides a fluent API for [SLF4J](https://www.slf4j.org/).
 
-## Motivation
+## How to use it
 
-As slf4j users, we are used to write code like the following:
+Add slf4j-fluent as a dependency to your project
 
-```java
-Logger log = LoggerFactory.getLogger(getClass());
-
-log.debug("debug entry with {} args: {}, {}", 2, "value 1", someObject.expensiveMethod());
+```xml
+<dependency> 
+  <groupId>org.slf4j</groupId>
+  <artifactId>slf4j-log4j12</artifactId>
+  <version>1.7.32</version>
+</dependency>
+<dependency> 
+  <groupId>org.fissore</groupId>
+  <artifactId>slf4j-fluent</artifactId>
+  <version>0.13.3</version>
+</dependency>
 ```
 
-This code has 2 problems: 
-* the `debug` method will always be called regardless of the logger level
-* and all the arguments will be evaluated and passed, even that `expensiveMethod` we'd like not to call unless logger level is really set to `debug`.
-
-Current solution is to wrap that code this way:
-
-```java
-if (log.isDebugEnabled()) {
-    log.debug("debug entry with {} args: {}, {}", 2, "value 1", someObject.expensiveMethod());
-}
-```
-
-## A fluent solution
-
-By using `slf4j-fluent` together with slf4j, we can rewrite that code this way:
+Initialize FluentLogger and start logging
 
 ```java
 FluentLogger log = FluentLoggerFactory.getLogger(getClass());
 
 log.debug().log("debug entry with {} args: {}, {}", 2, "value 1", lazy(() -> someObject.expensiveMethod()));
+
+// will add the stacktrace of the cause to the log entry
+log.error().withCause(exception).log("An error occured while fetching user {}", user.getId());
+
+// will log every 5 calls to `log` method, instead of every single time
+log.error().every(5).log("Errors occured, but we print only one entry every 5");
+
+// will log every 1 second, instead of every single time
+log.error().every(1, ChronoUnit.SECONDS).log("Errors occured, but we print only one entry every 1 second");
 ```
 
-The `debug()` (and `error()`, `info()`, etc) method returns a no-op logger when the logger is not set at the appropriate level (which might lead Hotspot to optimize that method call).
-
-The `lazy(...)` syntax leverages lambdas to postpone argument evaluation to the latest moment.
-
-The `log()` method has overloads with up to 5 arguments, so [the cost of varargs](https://stackoverflow.com/questions/2426455/javas-varargs-performance) is postponed. If 5 is not enough, open an issue and we'll add more.
-
-## Examples
+## More examples
 
 ```java
 import static org.fissore.slf4j.Util.lazy;
@@ -81,45 +77,53 @@ log.error().every(5).log("This error will be logged every 5 times the `log` meth
 log.error().withCause(new Exception()).every(10).log(() -> "error with normal arg: {}, and lazy arg {}", norm, lazy(() -> "lazy arg which takes a while to compute"));
 ```
 
-## Requirements
+## Motivation
 
-slf4j-fluent requires java 8 as it uses lambdas.
+As slf4j users, we are used to write code like the following:
 
-It is not an slf4j replacement, nor yet-another-logging-framework: it's just a fluent API for slf4j. Which means you can start using it right now with no changes to your existing code.
+```java
+Logger log = LoggerFactory.getLogger(getClass());
 
-## How to use it
-
-Add slf4j-fluent as a dependency to your project
-
-```xml
-<dependency> 
-  <groupId>org.slf4j</groupId>
-  <artifactId>slf4j-log4j12</artifactId>
-  <version>1.7.32</version>
-</dependency>
-<dependency> 
-  <groupId>org.fissore</groupId>
-  <artifactId>slf4j-fluent</artifactId>
-  <version>0.13.3</version>
-</dependency>
+log.debug("debug entry with {} args: {}, {}", 2, "value 1", someObject.expensiveMethod());
 ```
 
-Initialize FluentLogger and start logging
+This code has 2 problems:
+
+* the `debug` method will always be called regardless of the logger level
+* and all the arguments will be evaluated and passed, even that `expensiveMethod` we'd like not to call unless logger level is really set to `debug`.
+
+Current solution is to wrap that code this way:
+
+```java
+if (log.isDebugEnabled()) {
+    log.debug("debug entry with {} args: {}, {}", 2, "value 1", someObject.expensiveMethod());
+}
+```
+
+## A fluent solution
+
+By using `slf4j-fluent` together with slf4j, we can rewrite that code this way:
 
 ```java
 FluentLogger log = FluentLoggerFactory.getLogger(getClass());
 
 log.debug().log("debug entry with {} args: {}, {}", 2, "value 1", lazy(() -> someObject.expensiveMethod()));
-
-// will add the stacktrace of the cause to the log entry
-log.error().withCause(exception).log("An error occured while fetching user {}", user.getId());
-
-// will log every 5 calls to `log` method, instead of every single time
-log.error().every(5).log("Errors occured, but we print only one entry every 5");
-
-// will log every 1 second, instead of every single time
-log.error().every(1, ChronoUnit.SECONDS).log("Errors occured, but we print only one entry every 1 second");
 ```
+
+The `debug()` (and `error()`, `info()`, etc) method returns a no-op logger when the logger is not set at the appropriate level (which might lead Hotspot to optimize that method
+call).
+
+The `lazy(...)` syntax leverages lambdas to postpone argument evaluation to the latest moment.
+
+The `log()` method has overloads with up to 5 arguments, so [the cost of varargs](https://stackoverflow.com/questions/2426455/javas-varargs-performance) is postponed. If 5 is not
+enough, open an issue and we'll add more.
+
+## Requirements
+
+slf4j-fluent requires java 8 as it uses lambdas.
+
+It is not an slf4j replacement, nor yet-another-logging-framework: it's just a fluent API for slf4j. Which means you can start using it right now with no changes to your existing
+code.
 
 ## Trivia
 
