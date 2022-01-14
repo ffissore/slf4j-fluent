@@ -55,7 +55,7 @@
     <maven.compiler.source>${jdk.version}</maven.compiler.source>
     <maven.compiler.target>${jdk.version}</maven.compiler.target>
 
-    <slf4j-api.version>1.7.32</slf4j-api.version>
+    <slf4j-api.version>1.7.33</slf4j-api.version>
     <junit.version>4.13.2</junit.version>
     <logback-classic.version>1.2.10</logback-classic.version>
     <logstash-logback-encoder.version>7.0.1</logstash-logback-encoder.version>
