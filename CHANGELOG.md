@@ -8,7 +8,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ##### Security
 
-- Updated many dependencies, including slf4j to latest 1.7.33
+- Updated many dependencies, including slf4j to latest 1.7.35
 
 ### [0.13.3] - 2020-01-03
 
