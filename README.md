@@ -16,7 +16,7 @@ Add slf4j-fluent as a dependency to your project
 <dependency> 
   <groupId>org.slf4j</groupId>
   <artifactId>slf4j-log4j12</artifactId>
-  <version>1.7.35</version>
+  <version>1.7.36</version>
 </dependency>
 <dependency> 
   <groupId>org.fissore</groupId>
