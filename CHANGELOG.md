@@ -6,6 +6,10 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ### Unreleased
 
+Nothing yet
+
+### [0.14.0] - 2022-02-13
+
 ##### Security
 
 - Updated many dependencies, including slf4j to latest 1.7.36

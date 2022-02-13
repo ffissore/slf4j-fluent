@@ -21,7 +21,7 @@ Add slf4j-fluent as a dependency to your project
 <dependency> 
   <groupId>org.fissore</groupId>
   <artifactId>slf4j-fluent</artifactId>
-  <version>0.13.3</version>
+  <version>0.14.0</version>
 </dependency>
 ```
 

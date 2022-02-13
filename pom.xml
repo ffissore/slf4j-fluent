@@ -6,7 +6,7 @@
 
   <groupId>org.fissore</groupId>
   <artifactId>slf4j-fluent</artifactId>
-  <version>0.13.4-SNAPSHOT</version>
+  <version>0.14.0</version>
   <packaging>jar</packaging>
 
   <name>slf4j-fluent</name>
