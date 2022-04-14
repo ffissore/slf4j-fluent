@@ -58,7 +58,7 @@
     <slf4j-api.version>1.7.36</slf4j-api.version>
     <junit.version>4.13.2</junit.version>
     <logback-classic.version>1.2.11</logback-classic.version>
-    <logstash-logback-encoder.version>7.1</logstash-logback-encoder.version>
+    <logstash-logback-encoder.version>7.1.1</logstash-logback-encoder.version>
 
     <maven-compiler-plugin.version>3.10.1</maven-compiler-plugin.version>
     <pitest-maven.version>1.7.5</pitest-maven.version>
